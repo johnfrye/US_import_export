@@ -27,7 +27,7 @@ require("gridExtra")
 IE.data <- as.data.table(read.xls("http://www.census.gov/foreign-trade/balance/country.xls")) %.%
   filter(CTY_CODE >= 1000)
 
-#+ plot.2012.map
+#+ graph.2012.map
 tmp <- IE.data %.%
   filter(year == 2012)
 setnames(tmp, "CTYNAME", "id")
@@ -82,27 +82,8 @@ graph2012 <- ggplot(data = world.map,
   geom_path(colour = 'gray', linestyle = 2) + 
   annotate("text", x = -150, y = -25, label = "2012", size = 20)
 
-banner <- ggplot(data = data.table(x = 0, y = 0),
-                 aes(x = x, y = y)) +
-  theme_minimal() +
-  theme(line = element_blank(),
-        text = element_blank(),
-        title = element_blank(),
-        plot.margin = unit(c(0,0,-1,-1), "lines"),
-        panel.background = element_rect(fill = "grey40", color = "grey40")) + 
-  geom_text(label = "") + 
-  xlim(0, 10) +
-  annotate("text", x = c(0, 10), y = 0, 
-           label = c("GRAPHZOO.TUMBLR.COM", "SOURCE: US CENSUS BUREAU"),
-           color = "white", hjust = c(0.1, 0.9),
-           size = 4, family = "Avenir Next Condensed")
 
-png("2012_US_IE_balance.png", width = 1200, height = 600, bg = "#F0F0F0")
-grid.arrange(graph2012, banner, heights = c(1, .05))
-dev.off()
-
-
-#+ plot.1992.map
+#+ graph.1992.map
 tmp <- IE.data %.%
   filter(year == 1992)
 setnames(tmp, "CTYNAME", "id")
@@ -160,41 +141,11 @@ graph1992 <- ggplot(data = world.map,
   geom_path(colour = 'gray', linestyle = 2) + 
   annotate("text", x = -150, y = -25, label = "1992", size = 20)
 
-banner <- ggplot(data = data.table(x = 0, y = 0),
-                 aes(x = x, y = y)) +
-  theme_minimal() +
-  theme(line = element_blank(),
-        text = element_blank(),
-        title = element_blank(),
-        plot.margin = unit(c(0,0,-1,-1), "lines"),
-        panel.background = element_rect(fill = "grey40", color = "grey40")) + 
-  geom_text(label = "") + 
-  xlim(0, 10) +
-  annotate("text", x = c(0, 10), y = 0, 
-           label = c("GRAPHZOO.TUMBLR.COM", "SOURCE: US CENSUS BUREAU"),
-           color = "white", hjust = c(0.1, 0.9),
-           size = 6, family = "Avenir Next Condensed")
-
-png("1992_US_IE_balance.png", width = 1200, height = 600, bg = "#F0F0F0")
-grid.arrange(graph1992, banner, heights = c(1, .05))
-dev.off()
 
 #+ plot.combined.map
 png("Combined_US_IE_balance.png", width = 1200, height = 1200, bg = "#F0F0F0")
 grid.arrange(graph1992, graph2012, banner, heights = c(.9, 1, .05))
 dev.off()
-
-
-
-
-idx <- !(tmp$id %in% world.map$id)
-unique(tmp$id[idx])
-
-idx <- !(world.map$id %in% tmp$id)
-unique(world.map$id[idx])
-
-
-
 
 
 
